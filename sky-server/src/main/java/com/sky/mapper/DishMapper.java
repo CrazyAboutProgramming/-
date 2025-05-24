@@ -12,6 +12,8 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.List;
+
 @Mapper
 public interface DishMapper {
 
@@ -51,4 +53,19 @@ public interface DishMapper {
      */
     @Delete("delete from dish where id=#{id}")
     void deleteById(Long id);
+
+    /**
+     * 根据id修改菜品
+     * @param dish
+     */
+    @AutoFill(value = OperationType.UPDATE)
+    void update(Dish dish);
+
+    /**
+     * 根据分类id查询菜品
+     * @param categoryId
+     * @return
+     */
+    @Select("select * from dish where category_id=#{categoryId}")
+    List<Dish> list(Long categoryId);
 }
