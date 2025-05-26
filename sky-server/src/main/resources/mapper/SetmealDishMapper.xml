@@ -15,4 +15,5 @@
                 (#{setmealDish.setmealId},#{setmealDish.dishId},#{setmealDish.name},#{setmealDish.price},#{setmealDish.copies})
             </foreach>
     </insert>
+
 </mapper>
