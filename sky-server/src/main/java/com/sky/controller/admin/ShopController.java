@@ -5,6 +5,8 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,6 +25,7 @@ public class ShopController {
      */
     @PutMapping("/{status}")
     @ApiOperation("设置店铺状态")
+//    @CachePut(cacheNames = "SHOP_STATUS",key = "#status")
     public Result setStatus(@PathVariable Integer status){
         log.info("设置店铺状态:{}",status==1? "营业中" : "打烊中" );
         redisTemplate.opsForValue().set(KEY,status);
