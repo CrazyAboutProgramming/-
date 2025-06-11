@@ -11,6 +11,7 @@ import com.sky.entity.OrderDetail;
 import com.sky.entity.Orders;
 import com.sky.entity.ShoppingCart;
 import com.sky.exception.AddressBookBusinessException;
+import com.sky.exception.OrderBusinessException;
 import com.sky.exception.ShoppingCartBusinessException;
 import com.sky.mapper.AddressBookMapper;
 import com.sky.mapper.OrderDetailMapper;
@@ -187,10 +188,14 @@ public class OrderServiceImpl implements OrderService {
      */
     @Override
     public void cancelOrder(Long id) {
-        Integer status=6;
+        Integer status=Orders.CANCELLED;
         orderMapper.changeStatus(id,status);
     }
 
+    /**
+     * 再来一单
+     * @param id
+     */
     @Override
     public void repetition(Long id) {
         Orders orders=orderMapper.getById(id);
@@ -288,6 +293,28 @@ public class OrderServiceImpl implements OrderService {
         orders.setStatus(Orders.COMPLETED);
         orders.setDeliveryTime(LocalDateTime.now());
         orderMapper.update(orders);
+    }
+
+    /**
+     * 客户催单
+     * @param id
+     */
+    @Override
+    public void reminder(Long id) {
+        Orders ordersDB = orderMapper.getById(id);
+        if(ordersDB==null ){
+            throw new OrderBusinessException(MessageConstant.ORDER_NOT_FOUND);
+        }
+        //通过websocket向管理端推送消息
+        Map map=new HashMap();
+        map.put("type",2);//客户催单
+        map.put("orderId",id);
+        map.put("content","订单号"+ordersDB.getNumber());
+
+        String json = JSON.toJSONString(map);
+        webSocketServer.sendToAllClient(json);
+
+
     }
 
 }
