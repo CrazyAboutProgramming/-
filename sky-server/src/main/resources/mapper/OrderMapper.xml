@@ -15,4 +15,47 @@
              #{packAmount},#{tablewareNumber},#{tablewareStatus})
 
     </insert>
+    <select id="list" resultType="com.sky.vo.OrderVO">
+        select * from orders
+        <where>
+            <if test="beginTime!=null and endTime!=null"> and order_time between beginTime and endTime</if>
+            <if test="status!=null"> and status =#{status}</if>
+            <if test="number!=null"> and number =#{number}</if>
+            <if test="phone!=null"> and phone =#{phone}</if>
+        </where>
+        order by order_time desc
+    </select>
+
+    <update id="update" parameterType="com.sky.entity.Orders">
+        update orders
+        <set>
+            <if test="cancelReason != null and cancelReason!='' ">
+                cancel_reason=#{cancelReason},
+            </if>
+            <if test="rejectionReason != null and rejectionReason!='' ">
+                rejection_reason=#{rejectionReason},
+            </if>
+            <if test="cancelTime != null">
+                cancel_time=#{cancelTime},
+            </if>
+            <if test="payStatus != null">
+                pay_status=#{payStatus},
+            </if>
+            <if test="payMethod != null">
+                pay_method=#{payMethod},
+            </if>
+            <if test="checkoutTime != null">
+                checkout_time=#{checkoutTime},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            <if test="deliveryTime != null">
+                delivery_time = #{deliveryTime}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+
 </mapper>
