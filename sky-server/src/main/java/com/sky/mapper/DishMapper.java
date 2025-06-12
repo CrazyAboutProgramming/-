@@ -65,5 +65,13 @@ public interface DishMapper {
      */
     List<Dish> list(Dish dish);
 
+    /**
+     * 统计不同状态的菜品的数量
+     * @param status
+     * @return
+     */
+    @Select("select count(*) from dish where status=#{status}")
+    Integer getStatistics(Integer status);
+
 
 }

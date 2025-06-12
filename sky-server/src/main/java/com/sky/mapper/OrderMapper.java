@@ -1,6 +1,7 @@
 package com.sky.mapper;
 
 import com.github.pagehelper.Page;
+import com.sky.dto.GoodsSalesDTO;
 import com.sky.dto.OrdersPageQueryDTO;
 import com.sky.entity.Orders;
 import com.sky.vo.OrderVO;
@@ -62,7 +63,6 @@ public interface OrderMapper {
      * @param status
      * @return
      */
-    @Select("select count(*) from orders where status=#{status}")
     Integer getStatistics(Integer status);
 
     /**
@@ -86,4 +86,12 @@ public interface OrderMapper {
      * @return
      */
     Integer OrderCountByMap(Map map);
+
+    /**
+     * 统计指定时间内的销量排名
+     * @param begin
+     * @param end
+     * @return
+     */
+    List<GoodsSalesDTO> getSalesTop10(LocalDateTime begin,LocalDateTime end);
 }
