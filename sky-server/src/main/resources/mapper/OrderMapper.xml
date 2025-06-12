@@ -65,5 +65,13 @@
             <if test="status!=null">and status = #{status}</if> <!-- &lt; 表示小于号 -->
         </where>
     </select>
+    <select id="OrderCountByMap" resultType="java.lang.Integer">
+        select count(*) from orders
+        <where>
+            <if test="begin!=null">and order_time &gt; #{begin}</if> <!-- &gt; 表示大于号 -->
+            <if test="end!=null">and order_time &lt; #{end}</if> <!-- &lt; 表示小于号 -->
+            <if test="status!=null">and status = #{status}</if> <!-- &lt; 表示小于号 -->
+        </where>
+    </select>
 
 </mapper>
